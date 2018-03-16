@@ -1,0 +1,36 @@
+# The following types define the data model of the example service
+# based on which the GraphQL API is generated
+
+type User @model {
+  id: ID! @isUnique
+  name: String
+  dateOfBirth: DateTime
+
+  # Uncomment below - you can declare relations between models like this
+
+  todolists: [TodoList!]! @relation(name: "UserTodoList")
+}
+
+type TodoList @model {
+  id: ID! @isUnique
+  listname: String
+  author: User! @relation(name: "UserTodoList")
+  tasks: Task! @relation(name: "TodoListTask")
+}
+
+type Task @model {
+  id: ID! @isUnique
+  task: String
+  done: Boolean
+  todoList: TodoList! @relation(name: "TodoListTask")
+}
+
+# Uncomment the model below as well
+
+# type Post @model {
+#   id: ID! @isUnique
+#   title: String!
+#
+#   # Every relation also required a back-relation (to determine 1:1, 1:n or n:m)
+#   author: User! @relation(name: "UserPosts")
+# }
