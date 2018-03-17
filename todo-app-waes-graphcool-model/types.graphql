@@ -3,34 +3,28 @@
 
 type User @model {
   id: ID! @isUnique
-  name: String
-  dateOfBirth: DateTime
-
-  # Uncomment below - you can declare relations between models like this
-
+  userName: String
+  password: String
+  createdAt: DateTime! # optional system field
+  updatedAt: DateTime! # optional system field
   todolists: [TodoList!]! @relation(name: "UserTodoList")
 }
 
 type TodoList @model {
   id: ID! @isUnique
   listname: String
+  createdAt: DateTime! # optional system field
+  updatedAt: DateTime! # optional system field
   author: User! @relation(name: "UserTodoList")
-  tasks: Task! @relation(name: "TodoListTask")
+  tasks: [Task!]! @relation(name: "TodoListTask")
 }
 
 type Task @model {
   id: ID! @isUnique
   task: String
   done: Boolean
+  createdAt: DateTime! # optional system field
+  updatedAt: DateTime! # optional system field
   todoList: TodoList! @relation(name: "TodoListTask")
 }
 
-# Uncomment the model below as well
-
-# type Post @model {
-#   id: ID! @isUnique
-#   title: String!
-#
-#   # Every relation also required a back-relation (to determine 1:1, 1:n or n:m)
-#   author: User! @relation(name: "UserPosts")
-# }
