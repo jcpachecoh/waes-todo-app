@@ -1,23 +1,68 @@
 {
-  "name": "waes-todo-app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-scripts-ts": "2.14.0"
-  },
-  "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
-  },
-  "devDependencies": {
-    "@types/jest": "^22.2.0",
-    "@types/node": "^9.4.7",
-    "@types/react": "^16.0.40",
-    "@types/react-dom": "^16.0.4",
-    "typescript": "^2.7.2"
-  }
+    "name": "waes-todo-app",
+    "version": "0.1.0",
+    "jest": {
+        "moduleNameMapper": {
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/empty-module.js",
+            "\\.(css|less)$": "<rootDir>/empty-module.js"
+        },
+        "transform": {
+            ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+        },
+        "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js"
+        ],
+        "setupTestFrameworkScriptFile": "<rootDir>/localStorageMock.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js"
+    ],
+    "private": true,
+    "dependencies": {
+        "@types/history": "^4.6.2",
+        "@types/react-bootstrap": "^0.32.6",
+        "@types/react-redux": "^5.0.15",
+        "@types/react-router-redux": "^5.0.12",
+        "@types/redux": "^3.6.0",
+        "@types/redux-thunk": "^2.1.0",
+        "apollo-client": "^2.2.7",
+        "enzyme": "^3.3.0",
+        "gulp": "^3.9.1",
+        "gulp-sass": "^3.1.0",
+        "gulp-sass-lint": "^1.3.4",
+        "jest": "^22.4.2",
+        "lodash": "^4.17.5",
+        "react": "^16.2.0",
+        "react-apollo": "^2.0.4",
+        "react-bootstrap": "^0.32.1",
+        "react-dom": "^16.2.0",
+        "react-redux": "^5.0.7",
+        "react-router": "^4.2.0",
+        "react-router-redux": "^4.0.8",
+        "react-scripts-ts": "2.14.0",
+        "semantic-ui-react": "^0.79.0"
+    },
+    "scripts": {
+        "start": "react-scripts-ts start",
+        "build": "react-scripts-ts build",
+        "test": "react-scripts-ts test --env=jsdom",
+        "eject": "react-scripts-ts eject"
+    },
+    "devDependencies": {
+        "@types/jest": "^22.2.0",
+        "@types/node": "^9.4.7",
+        "@types/react": "^16.0.40",
+        "@types/react-dom": "^16.0.4",
+        "babel-jest": "^23.0.0-alpha.0",
+        "react-addons-test-utils": "^15.6.2",
+        "react-test-renderer": "^16.2.0",
+        "redux-mock-store": "^1.5.1",
+        "typescript": "^2.7.2"
+    }
 }
