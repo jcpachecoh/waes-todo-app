@@ -1,13 +1,13 @@
 import * as React from 'react';
-import './App.css';
-import Header from './Components/Header';
+import './css/app.css';
+import HeaderContainer from './Containers/HeaderContainer';
 import TodoLayout from './Components/TodoLayout';
 
 class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header />
+        <HeaderContainer />
         <TodoLayout />
       </div>
     );

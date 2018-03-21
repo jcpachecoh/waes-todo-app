@@ -1,8 +1,10 @@
-import { Action } from '../Action';
+import { Action, ActionBoolean, ActionString } from '../Action';
 import { Task } from '../Models/Task';
 
 export const ADD_TODO = 'AddTodo';
 export type ADD_TODO = typeof ADD_TODO;
+export const CHANGE_TODO_TASK_INPUT = 'ChangeTodoTaskInput';
+export type CHANGE_TODO_TASK_INPUT = typeof CHANGE_TODO_TASK_INPUT;
 export const SET_AS_COMPLETE = 'SetAsComplete';
 export type SET_AS_COMPLETE = typeof SET_AS_COMPLETE;
 export const DELETE_TODO = 'DeleteTodo';
@@ -13,10 +15,12 @@ export const SHOW_ACTIVE = 'ShowActive';
 export type SHOW_ACTIVE = typeof SHOW_ACTIVE;
 export const SHOW_COMPLETED = 'ShowCompleted';
 export type SHOW_COMPLETED = typeof SHOW_COMPLETED;
+export const SET_SHOW_MODAL_TASK = 'SetShowModalTask';
+export type SET_SHOW_MODAL_TASK = typeof SET_SHOW_MODAL_TASK;
 
 export class AddTodo implements Action {
-    type: ADD_TODO
-    payload: Task
+    type: ADD_TODO;
+    payload: Task;
 }
 
 export function addTodo(task: Task): AddTodo {
@@ -27,8 +31,8 @@ export function addTodo(task: Task): AddTodo {
 }
 
 export class DeleteTodo implements Action {
-    type: DELETE_TODO
-    payload: Task
+    type: DELETE_TODO;
+    payload: Task;
 }
 
 export function deleteTodo(task: Task): DeleteTodo {
@@ -38,10 +42,9 @@ export function deleteTodo(task: Task): DeleteTodo {
     };
 }
 
-
-export class SetAsComplete implements Action {
-    type: SET_AS_COMPLETE
-    payload: boolean
+export class SetAsComplete implements ActionBoolean {
+    type: SET_AS_COMPLETE;
+    payload: boolean;
 }
 
 export function setAsComplete(done: boolean): SetAsComplete {
@@ -52,7 +55,7 @@ export function setAsComplete(done: boolean): SetAsComplete {
 }
 
 export class ShowAll implements Action {
-    type: SHOW_ALL
+    type: SHOW_ALL;
 }
 
 export function showAll(): ShowAll {
@@ -62,7 +65,7 @@ export function showAll(): ShowAll {
 }
 
 export class ShowActive implements Action {
-    type: SHOW_ACTIVE
+    type: SHOW_ACTIVE;
 }
 
 export function showActive(): ShowActive {
@@ -72,12 +75,36 @@ export function showActive(): ShowActive {
 }
 
 export class ShowCompleted implements Action {
-    type: SHOW_COMPLETED
+    type: SHOW_COMPLETED;
 }
 
 export function showCompleted(): ShowCompleted {
     return {
         type: SHOW_COMPLETED
+    };
+}
+
+export class ChangeTodoTaskInput implements ActionString {
+    type: CHANGE_TODO_TASK_INPUT;
+    payload: string;
+}
+
+export function changeTodoTaskInput(task: string): ChangeTodoTaskInput {
+    return {
+        type: CHANGE_TODO_TASK_INPUT,
+        payload: task
+    };
+}
+
+export class SetShowModalTask implements ActionBoolean {
+    type: SET_SHOW_MODAL_TASK;
+    payload: boolean;
+}
+
+export function setShowModalTask(flag: boolean): SetShowModalTask {
+    return {
+        type: SET_SHOW_MODAL_TASK,
+        payload: flag
     };
 }
 
@@ -87,4 +114,6 @@ export type TodoActions =
     SetAsComplete |
     ShowAll |
     ShowActive |
-    ShowCompleted;
+    ShowCompleted |
+    ChangeTodoTaskInput |
+    SetShowModalTask;

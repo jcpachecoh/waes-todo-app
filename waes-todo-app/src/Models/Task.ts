@@ -8,3 +8,11 @@ export class Task {
         this.done = false;
     }
 }
+
+export class TaskGQVariables {
+    orderBy: string;
+
+    constructor() {
+        this.orderBy = 'createdAt_ASC';
+    }
+}

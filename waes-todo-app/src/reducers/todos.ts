@@ -1,7 +1,9 @@
-import { TodoActions, ADD_TODO } from '../actions/index';
-
+import { TodoActions, ADD_TODO, CHANGE_TODO_TASK_INPUT, SET_SHOW_MODAL_TASK } from '../actions/index';
+import { Task } from '../Models/Task';
 
 const newObject = (state: any, newData: any) => Object.assign({}, state, newData);
+
+var todosInitial: Task[] = [];
 
 export const defaultTodos = {
     todo: {
@@ -9,23 +11,34 @@ export const defaultTodos = {
         task: '',
         done: false,
     },
-    saving: false,
-    clientId: '',
-    errorsMessages: { errorName: '', errorsUserDomains: '' },
-    confirmModal: false,
-    showModal: false,
-    disableSaveBtn: true,
-    stateConfirmModal: false
+    todos: todosInitial,
+    showModalTask: false
 };
-
-
 
 export const todoReducer = (state = defaultTodos, action: TodoActions) => {
     switch (action.type) {
         case ADD_TODO:
-            return newObject(state,{
-                todo: action.payload
-            })
+            let todos: Task[] = [];
+            todos = state.todos.slice();
 
+            return newObject(state, {
+                todos: todos
+            });
+        case CHANGE_TODO_TASK_INPUT:
+
+            return newObject(state, {
+                task: { task: action.payload }
+            });
+        case SET_SHOW_MODAL_TASK:
+            return newObject(state, {
+                showModalTask: action.payload
+            });
+        case CHANGE_TODO_TASK_INPUT:
+
+            return newObject(state, {
+                task: { task: action.payload }
+            });
+        default:
+            return state;
     }
-}
+};
