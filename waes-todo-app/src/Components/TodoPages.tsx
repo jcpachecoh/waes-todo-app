@@ -3,6 +3,7 @@ import { ChildProps, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { TaskGQVariables } from '../Models/Task';
 import { TodoPage } from '../Models/TodoPage';
+import { Nav, NavItem } from 'react-bootstrap';
 
 export interface TodoPagesProps {
   setTodoPage: Function;
@@ -34,9 +35,11 @@ class TodoPages extends React.Component<ChildProps<TodoPagesProps, Data>, {}> {
   render() {
     return (
       <div className="left-menu" >
+       <Nav bsStyle="pills" stacked={true}>
         {this.props.data.allTodoLists && this.props.data.allTodoLists.map((item: TodoPage, index: number) => {
-          return <h3 key={index}>{item.listname}</h3>;
+          return <NavItem key={index} onClick={() => this.props.setTodoPage(item.id)}>{item.listname}</NavItem>;
         })}
+        </Nav>
       </div>
     );
   }

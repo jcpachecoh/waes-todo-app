@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import '../App.css';
-import { Button, Modal, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { Button, Modal, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import { Task } from '../Models/Task';
 import { request } from 'graphql-request';
 import { queryCreateTask } from '../querys/index';
@@ -12,6 +12,7 @@ export interface TaskModalProps {
     changeTodoTaskInput: Function;
     addTodo: Function;
     setShowModalTask: Function;
+    pageId: string;
 }
 
 interface TaskModalState {
@@ -21,16 +22,11 @@ interface TaskModalState {
 export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
     constructor(props: TaskModalProps) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
         this.saveTask = this.saveTask.bind(this);
-
-        this.state = {
-            value: ''
-        };
     }
 
     getValidationState() {
-        const length = this.state.value.length;
+        const length = this.props.task.task.length;
         if (length > 10) {
             return 'success';
         } else if (length > 5) {
@@ -41,18 +37,14 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
         return null;
     }
 
-    handleChange(e: any) {
-        this.setState({ value: e.target.value });
-    }
-
     saveTask() {
         const variables = {
-            task: this.state.value,
-            todoListId: 'cjevh01zwyu0w0148vql4vrck'
+            task: this.props.task.task,
+            todoListId: this.props.pageId
         };
 
         request('https://api.graph.cool/simple/v1/cjeujoqgm10rw0151kql505uu', queryCreateTask, variables)
-            .then((data) => () => this.props.setShowModalTask(false));
+            .then((data) => this.props.setShowModalTask(false));
     }
     render() {
         return (
@@ -70,12 +62,10 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
                             <ControlLabel>Task</ControlLabel>
                             <FormControl
                                 type="text"
-                                value={this.state.value}
                                 placeholder="Enter text"
-                                onChange={(e) => this.handleChange(e)}
+                                onChange={(e: any) => this.props.changeTodoTaskInput(e.target.value)}
                             />
                             <FormControl.Feedback />
-                            <HelpBlock>Validation is based on string length.</HelpBlock>
                         </FormGroup>
                     </form></Modal.Body>
 

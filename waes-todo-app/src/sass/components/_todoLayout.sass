@@ -1,5 +1,66 @@
-.todo-list
- background-color: $colorbase
-.left-menu
-    border: 2px solid #000000
-    height: 200px
+.tasks-lists
+    background-color: $colorbase
+    position: absolute
+    top: 50%
+    padding: 10px 4px
+    width: 100%
+    margin-top: -11px
+    height: 4px
+    text-align: left
+
+    &:before
+        content: ''
+        display: block
+        height: 3px
+        background: #8c959d
+        border-radius: 1px
+
+    .tasks-list-item
+        display: block
+        padding: 12px 15px
+        cursor: pointer
+        border-bottom: 1px solid #999966
+
+    .tasks-list-item-done
+        display: block
+        padding: 12px 15px
+        cursor: pointer
+        text-decoration: line-through
+        border-bottom: 1px solid #999966
+
+    .tasks-list-mark
+        position: relative
+        display: inline-block
+        vertical-align: top
+        margin-right: 12px
+        height: 20px
+        border: 2px solid #c4cbd2
+        border-radius: 12px
+
+        &:before
+            content: ''
+            display: none
+            position: absolute
+            top: 50%
+            left: 50%
+            margin: -5px 0 0 -6px
+            height: 4px
+            width: 8px
+            border: solid #39ca74
+            border-width: 0 0 4px 4px
+
+        &.tasks-list-cb:checked
+            border-color: #39ca74
+
+            &:before
+                display: block
+
+    .tasks-list-desc
+        font-weight: bold
+        color: #8a9a9b
+
+        &.tasks-list-cb:checked
+            color: #34bf6e
+            text-decoration: line-through
+
+

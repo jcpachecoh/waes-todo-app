@@ -1,12 +1,12 @@
 import { Action, ActionBoolean, ActionString } from '../Action';
 import { Task } from '../Models/Task';
+import { request } from 'graphql-request';
+import { queryUpdateTask } from '../querys/index';
 
 export const ADD_TODO = 'AddTodo';
 export type ADD_TODO = typeof ADD_TODO;
 export const CHANGE_TODO_TASK_INPUT = 'ChangeTodoTaskInput';
 export type CHANGE_TODO_TASK_INPUT = typeof CHANGE_TODO_TASK_INPUT;
-export const SET_AS_COMPLETE = 'SetAsComplete';
-export type SET_AS_COMPLETE = typeof SET_AS_COMPLETE;
 export const DELETE_TODO = 'DeleteTodo';
 export type DELETE_TODO = typeof DELETE_TODO;
 export const SHOW_ALL = 'ShowAll';
@@ -44,15 +44,15 @@ export function deleteTodo(task: Task): DeleteTodo {
     };
 }
 
-export class SetAsComplete implements ActionBoolean {
-    type: SET_AS_COMPLETE;
-    payload: boolean;
-}
+export function setAsComplete(taskId: string, done: boolean) {
+    return (dispatch: any, getState: any) => {
+        let variables = {
+            id: taskId,
+            done: done
+        };
 
-export function setAsComplete(done: boolean): SetAsComplete {
-    return {
-        type: SET_AS_COMPLETE,
-        payload: done
+        request('https://api.graph.cool/simple/v1/cjeujoqgm10rw0151kql505uu', queryUpdateTask, variables)
+            .then((data) => () => console.log(data));
     };
 }
 
@@ -125,7 +125,6 @@ export function setTodoPage(pageId: string): SetTodoPage {
 export type TodoActions =
     AddTodo |
     DeleteTodo |
-    SetAsComplete |
     ShowAll |
     ShowActive |
     ShowCompleted |

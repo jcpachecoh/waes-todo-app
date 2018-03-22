@@ -1,29 +1,20 @@
-import { TodoActions, ADD_TODO, CHANGE_TODO_TASK_INPUT, SET_SHOW_MODAL_TASK } from '../actions/index';
-import { Task } from '../Models/Task';
+import { TodoActions, CHANGE_TODO_TASK_INPUT, SET_SHOW_MODAL_TASK, SET_TODO_PAGE, SHOW_ACTIVE, SHOW_COMPLETED } from '../actions/index';
 
 const newObject = (state: any, newData: any) => Object.assign({}, state, newData);
 
-var todosInitial: Task[] = [];
-
 export const defaultTodos = {
-    todo: {
+    task: {
         id: 0,
         task: '',
         done: false,
     },
-    todos: todosInitial,
-    showModalTask: false
+    pageId: 'cjevh01zwyu0w0148vql4vrck',
+    showModalTask: false,
+    showActiveFlag: false
 };
 
 export const todoReducer = (state = defaultTodos, action: TodoActions) => {
     switch (action.type) {
-        case ADD_TODO:
-            let todos: Task[] = [];
-            todos = state.todos.slice();
-
-            return newObject(state, {
-                todos: todos
-            });
         case CHANGE_TODO_TASK_INPUT:
 
             return newObject(state, {
@@ -36,7 +27,20 @@ export const todoReducer = (state = defaultTodos, action: TodoActions) => {
         case CHANGE_TODO_TASK_INPUT:
 
             return newObject(state, {
-                task: { task: action.payload }
+                task: { task: { task: action.payload } }
+            });
+        case SET_TODO_PAGE:
+            return newObject(state, {
+                pageId: action.payload
+            });
+
+        case SHOW_ACTIVE:
+            return newObject(state, {
+                showActiveFlag: true
+            });
+        case SHOW_COMPLETED:
+            return newObject(state, {
+                showActiveFlag: false
             });
         default:
             return state;

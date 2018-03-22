@@ -7,7 +7,8 @@ import { StoreState } from '../Models/StoreState';
 export function mapStateToProps(state: StoreState) {
     return {
         task: state.todoReducer.task,
-        showModalTask: state.todoReducer.showModalTask
+        showModalTask: state.todoReducer.showModalTask,
+        pageId: state.todoReducer.pageId
     };
 }
 

@@ -1,14 +1,23 @@
 import { connect, Dispatch } from 'react-redux';
-import {  TodoActions, showAll, showActive, showCompleted } from '../actions/index';
+import { TodoActions, showAll, showActive, showCompleted, setAsComplete } from '../actions/index';
 import { TodoListHOC, TodoListProps } from '../Components/TodoList';
+import { StoreState } from '../Models/StoreState';
 
-type ConnectedDispatchProps = Pick<TodoListProps, 'showAll' | 'showActive' | 'showCompleted'>;
+export function mapStateToProps(state: StoreState) {
+    return {
+        pageId: state.todoReducer.pageId,
+        showActiveFlag: state.todoReducer.showActiveFlag
+    };
+}
+
+type ConnectedDispatchProps = Pick<TodoListProps, 'showAll' | 'showActive' | 'showCompleted' | 'setAsComplete'>;
 export function mapDispatchToProps(dispatch: Dispatch<TodoActions>): ConnectedDispatchProps {
     return {
         showAll: () => dispatch(showAll()),
         showActive: () => dispatch(showActive()),
-        showCompleted: () => dispatch(showCompleted())
+        showCompleted: () => dispatch(showCompleted()),
+        setAsComplete: (id: string, done: boolean) => dispatch(setAsComplete(id, done))
     };
 }
 
-export default connect(null, mapDispatchToProps)(TodoListHOC);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoListHOC);

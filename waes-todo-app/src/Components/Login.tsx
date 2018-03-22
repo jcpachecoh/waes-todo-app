@@ -1,65 +1,81 @@
 import * as React from 'react';
 import '../css/app.css';
-import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, Button, Form, Alert } from 'react-bootstrap';
+import { User } from '../Models/User';
+import { queryGetUser } from '../querys/index';
+import { request } from 'graphql-request';
 
-export interface LoginState {
-    email: string;
-    password: string;
+export interface LoginProps {
+    user: User;
+    handleUsername: Function;
+    handlePassword: Function;
 }
 
-export class Login extends React.Component<{}, LoginState> {
+export interface LoginState {
+    errorLogin: string;
+}
+
+export class Login extends React.Component<LoginProps, LoginState> {
     constructor(props: any) {
         super(props);
-
         this.state = {
-            email: '',
-            password: ''
+            errorLogin: ''
         };
     }
-    validateForm() {
-        return this.state.email.length > 0 && this.state.password.length > 0;
-    }
 
-    handleChange = (event: any) => {
-        this.setState({
-            [event.target.id]: event.target.value
-        });
-    }
+    validateUser() {
 
-    handleSubmit = (event: any) => {
-        event.preventDefault();
+        const variables = {
+            username: this.props.user.username,
+            password: this.props.user.password
+        };
+
+        request('https://api.graph.cool/simple/v1/cjeujoqgm10rw0151kql505uu', queryGetUser, variables)
+            .then((data: any) => {
+                if (data.allUsers.length === 0) {
+                    this.setState({
+                        errorLogin: 'Username or password is worng, please try again'
+                    });
+                } else {
+                    console.log(data.allUsers.id);
+                    localStorage.setItem('sessionItemId', data.allUsers.id);
+                }
+
+            });
     }
 
     render() {
         return (
-            <div className="Login">
-                <form onSubmit={this.handleSubmit}>
+            <div className="container">
+                <Form horizontal={true}>
                     <FormGroup controlId="email" bsSize="large">
-                        <ControlLabel>Email</ControlLabel>
+                        <ControlLabel>Username</ControlLabel>
                         <FormControl
                             autoFocus={true}
-                            type="email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
+                            type="text"
+                            onChange={(e: any) => this.props.handleUsername(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup controlId="password" bsSize="large">
                         <ControlLabel>Password</ControlLabel>
                         <FormControl
-                            value={this.state.password}
-                            onChange={this.handleChange}
+                            onChange={(e: any) => this.props.handlePassword(e.target.value)}
                             type="password"
                         />
                     </FormGroup>
                     <Button
                         block={true}
                         bsSize="large"
-                        disabled={!this.validateForm()}
-                        type="submit"
+                        onClick={() => this.validateUser()}
                     >
                         Login
                     </Button>
-                </form>
+                    {this.state.errorLogin &&
+                        <Alert bsStyle="warning">
+                            {this.state.errorLogin}
+                        </Alert>
+                    }
+                </Form>
             </div>
         );
     }

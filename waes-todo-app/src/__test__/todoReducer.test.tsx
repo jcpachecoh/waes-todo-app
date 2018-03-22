@@ -1,0 +1,50 @@
+
+import { createStore } from 'redux';
+import configureStore from 'redux-mock-store';
+import { defaultTodos, todoReducer } from '../reducers/todos';
+import { changeTodoTaskInput } from '../actions/index';
+
+describe('Test Client reducer', () => {
+    const mockStore = configureStore();
+    let defaultTodosMock: any, store: any, storeActions: any, task: string, action: any;
+
+    beforeEach(() => {
+        store = createStore(todoReducer);
+        task = 'clean house';
+        defaultTodosMock = {
+            task: {
+                id: 0,
+                task: '',
+                done: false,
+            },
+            pageId: 'cjevh01zwyu0w0148vql4vrck',
+            showModalTask: false
+        };
+        storeActions = mockStore(defaultTodosMock);
+    });
+
+    describe('Test general action', () => {
+        it('Return initial state', () => {
+            expect(defaultTodos).toEqual(defaultTodosMock);
+        });
+    });
+
+    it('should change action task input', () => {
+        storeActions.dispatch(changeTodoTaskInput(task));
+        action = storeActions.getActions();
+        expect(action[0].type).toBe('changeTodoTaskInput');
+    });
+
+    it('should change action task store data', () => {
+        storeActions.dispatch(changeTodoTaskInput(task));
+        action = storeActions.getActions();
+        expect(action[0].payload).toBe(task);
+    });
+
+    it('should change action task in the store data', () => {
+        store.dispatch(changeTodoTaskInput(task));
+        store = store.getState();
+        expect(store.task.task).toBe(task);
+    });
+
+});

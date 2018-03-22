@@ -1,9 +1,27 @@
-export const queryCreateTask = `mutation($task: String!){
+export const queryCreateTask = `mutation($task: String!, $todoListId: ID!){
     createTask(
-        task: $task
+        task: $task,
+        todoListId: $todoListId,
         done: false
-        todoListId: "cjevh01zwyu0w0148vql4vrck"
     ){
         id
+    }
+  }`;
+
+export const queryUpdateTask = `mutation($id: ID!, $done: Boolean! ){
+    updateTask(
+        id: $id,
+        done: $done
+    ){
+        id
+    }
+  }`;
+
+export const queryGetUser =  `query($username: String!, $password: String!){
+    allUsers(filter: {
+      userName: $username,
+      password: $password
+    }){
+      id
     }
   }`;
