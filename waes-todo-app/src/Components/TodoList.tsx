@@ -35,7 +35,7 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, {}> {
 
   render() {
     return (
-      <div >
+      <div className="main-panel">
         {this.props.data.allTasks && this.props.data.allTasks.map((item: Task, index: number) => {
           return <h1 key={index}>{item.task}</h1>;
         })}

@@ -17,6 +17,8 @@ export const SHOW_COMPLETED = 'ShowCompleted';
 export type SHOW_COMPLETED = typeof SHOW_COMPLETED;
 export const SET_SHOW_MODAL_TASK = 'SetShowModalTask';
 export type SET_SHOW_MODAL_TASK = typeof SET_SHOW_MODAL_TASK;
+export const SET_TODO_PAGE = 'SetTodoPage';
+export type SET_TODO_PAGE = typeof SET_TODO_PAGE;
 
 export class AddTodo implements Action {
     type: ADD_TODO;
@@ -108,6 +110,18 @@ export function setShowModalTask(flag: boolean): SetShowModalTask {
     };
 }
 
+export class SetTodoPage implements ActionString {
+    type: SET_TODO_PAGE;
+    payload: string;
+}
+
+export function setTodoPage(pageId: string): SetTodoPage {
+    return {
+        type: SET_TODO_PAGE,
+        payload: pageId
+    };
+}
+
 export type TodoActions =
     AddTodo |
     DeleteTodo |
@@ -116,4 +130,5 @@ export type TodoActions =
     ShowActive |
     ShowCompleted |
     ChangeTodoTaskInput |
-    SetShowModalTask;
+    SetShowModalTask |
+    SetTodoPage;

@@ -3,6 +3,8 @@ import * as React from 'react';
 import '../App.css';
 import { Button, Modal, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 import { Task } from '../Models/Task';
+import { request } from 'graphql-request';
+import { queryCreateTask } from '../querys/index';
 
 export interface TaskModalProps {
     showModalTask: boolean;
@@ -15,10 +17,12 @@ export interface TaskModalProps {
 interface TaskModalState {
     value: string;
 }
+
 export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
     constructor(props: TaskModalProps) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.saveTask = this.saveTask.bind(this);
 
         this.state = {
             value: ''
@@ -39,6 +43,16 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
 
     handleChange(e: any) {
         this.setState({ value: e.target.value });
+    }
+
+    saveTask() {
+        const variables = {
+            task: this.state.value,
+            todoListId: 'cjevh01zwyu0w0148vql4vrck'
+        };
+
+        request('https://api.graph.cool/simple/v1/cjeujoqgm10rw0151kql505uu', queryCreateTask, variables)
+            .then((data) => () => this.props.setShowModalTask(false));
     }
     render() {
         return (
@@ -67,7 +81,7 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
 
                     <Modal.Footer>
                         <Button onClick={() => this.props.setShowModalTask(false)}>Close</Button>
-                        <Button bsStyle="primary">Add Task</Button>
+                        <Button bsStyle="primary" onClick={() => this.saveTask()}>Add Task</Button>
                     </Modal.Footer>
                 </Modal >
             </div >

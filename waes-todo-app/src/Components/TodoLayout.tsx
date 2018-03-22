@@ -3,6 +3,7 @@ import '../App.css';
 import { Row, Col } from 'react-bootstrap';
 import TaskModalContainer from '../Containers/TaskModalContainer';
 import TodoListContainer from '../Containers/TodoListContainer';
+import TodoPageContainer from '../Containers/TodoPageContainer';
 
 class TodoLayout extends React.Component {
     render() {
@@ -10,11 +11,10 @@ class TodoLayout extends React.Component {
             <div className="content">
                 <Row >
                     <Col sm={2}>
-                        sdiffuidfiud
-                        </Col>
+                        <TodoPageContainer />
+                    </Col>
                     <Col sm={10}>
                         <TaskModalContainer />
-                        <code>&lt;{'Col xs={6} md={4}'} /">">&gt;</code>
                         <TodoListContainer />
                     </Col>
                 </Row>
