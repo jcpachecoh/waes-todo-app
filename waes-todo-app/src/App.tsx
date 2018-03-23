@@ -2,31 +2,19 @@ import * as React from 'react';
 import './css/app.css';
 import TodoLayout from './Components/TodoLayout';
 import LoginContainer from './Containers/LoginContainer';
-
-interface AppProps {
-}
-interface AppState {
-  localSessionId: any;
-}
-class App extends React.Component<AppProps, AppState> {
-
-  constructor(props: AppProps) {
-    super(props);
-
-    this.state = {
-      localSessionId: localStorage.getItem('sessionItemId')
-    };
-  }
+import { Router, Route } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
+ 
+const history = createHistory();
+class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        {!this.state.localSessionId &&
-          <LoginContainer />
-        }
-        {this.state.localSessionId &&
-          <TodoLayout />
-        }
-      </div>
+      <Router history={history}>
+        <div>
+          <Route exact={true} path="/" component={LoginContainer} />
+          <Route exact={true} path="/todos" component={TodoLayout} />
+        </div>
+      </Router>
     );
   }
 }

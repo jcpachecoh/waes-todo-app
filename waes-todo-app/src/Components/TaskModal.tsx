@@ -13,6 +13,7 @@ export interface TaskModalProps {
     addTodo: Function;
     setShowModalTask: Function;
     pageId: string;
+    refresh: Function;
 }
 
 interface TaskModalState {
@@ -44,7 +45,10 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
         };
 
         request('https://api.graph.cool/simple/v1/cjeujoqgm10rw0151kql505uu', queryCreateTask, variables)
-            .then((data) => this.props.setShowModalTask(false));
+            .then((data) => {
+                this.props.setShowModalTask(false);
+                this.props.refresh();
+            });
     }
     render() {
         return (

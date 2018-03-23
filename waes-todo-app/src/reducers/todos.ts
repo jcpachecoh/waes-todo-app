@@ -36,11 +36,11 @@ export const todoReducer = (state = defaultTodos, action: TodoActions) => {
 
         case SHOW_ACTIVE:
             return newObject(state, {
-                showActiveFlag: true
+                showActiveFlag: false
             });
         case SHOW_COMPLETED:
             return newObject(state, {
-                showActiveFlag: false
+                showActiveFlag: true
             });
         default:
             return state;

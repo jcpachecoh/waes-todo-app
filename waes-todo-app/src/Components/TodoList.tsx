@@ -5,6 +5,8 @@ import { Task, TaskGQVariables } from '../Models/Task';
 import { queryUpdateTask } from '../querys/index';
 import { request } from 'graphql-request';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import TaskModalContainer from '../Containers/TaskModalContainer';
+import { User } from '../Models/User';
 
 export interface TodoListProps {
   showAll: Function;
@@ -13,6 +15,7 @@ export interface TodoListProps {
   setAsComplete: Function;
   pageId: string;
   showActiveFlag: boolean;
+  user: User;
 }
 
 export interface TodoListState {
@@ -62,6 +65,7 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
   }
 
   componentWillReceiveProps(nextProps: TodoListProps) {
+    console.log(nextProps);
     this.props.data.variables = Object.assign(this.props.data.variables, { done: nextProps.showActiveFlag });
     this.refresh();
   }
@@ -70,6 +74,7 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
     this.setState({
       loading: true
     });
+    this.props.data.variables = Object.assign(this.props.data.variables, { done: this.props.showActiveFlag });
     this.props.data.refetch(this.props.data.variables)
       .then((data) => {
         this.setState({
@@ -92,6 +97,7 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
   render() {
     return (
       <div className="main-panel">
+       <TaskModalContainer refresh={() => this.refresh()} />
         <fieldset className="tasks-lists">
           {this.props.data.allTasks && this.props.data.allTasks.map((item: Task, index: number) => {
             return <label key={index} className={(item.done) ? 'tasks-list-item-done' : 'tasks-list-item'}>

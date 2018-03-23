@@ -7,6 +7,7 @@ export interface HeaderProps {
     showAll: Function;
     showActive: Function;
     showCompleted: Function;
+    logOut: Function;
 }
 
 export class Header extends React.Component<HeaderProps, {}> {
@@ -31,6 +32,11 @@ export class Header extends React.Component<HeaderProps, {}> {
                         </NavItem>
                         <NavItem eventKey={1} href="#" onClick={() => this.props.showCompleted()}>
                             <Glyphicon glyph="minus" /> ShowCompleted
+                        </NavItem>
+                    </Nav>
+                    <Nav pullRight={true}>
+                        <NavItem onClick={() => this.props.logOut()}>
+                            LogOut
                         </NavItem>
                     </Nav>
                 </Navbar>

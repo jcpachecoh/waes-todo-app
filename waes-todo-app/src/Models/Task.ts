@@ -12,11 +12,9 @@ export class Task {
 }
 
 export class TaskGQVariables {
-    orderBy: string;
     done: boolean;
 
     constructor() {
-        this.orderBy = 'createdAt_ASC';
         this.done = false;
     }
 }

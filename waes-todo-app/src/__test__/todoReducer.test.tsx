@@ -2,7 +2,7 @@
 import { createStore } from 'redux';
 import configureStore from 'redux-mock-store';
 import { defaultTodos, todoReducer } from '../reducers/todos';
-import { changeTodoTaskInput } from '../actions/index';
+import { changeTodoTaskInput, showAll, showActive, setShowModalTask } from '../actions/index';
 
 describe('Test Client reducer', () => {
     const mockStore = configureStore();
@@ -45,6 +45,43 @@ describe('Test Client reducer', () => {
         store.dispatch(changeTodoTaskInput(task));
         store = store.getState();
         expect(store.task.task).toBe(task);
+    });
+
+    it('should call show all', () => {
+        storeActions.dispatch(showAll());
+        action = storeActions.getActions();
+        expect(action[0].type).toBe('showAll');
+    });
+
+    /////////////////////////
+    it('should change action task input', () => {
+        storeActions.dispatch(setShowModalTask(true));
+        action = storeActions.getActions();
+        expect(action[0].type).toBe('ShowModalTask');
+    });
+
+    it('should change action task store data', () => {
+        storeActions.dispatch(setShowModalTask(true));
+        action = storeActions.getActions();
+        expect(action[0].payload).toBe(true);
+    });
+
+    it('should change action task in the store data', () => {
+        store.dispatch(setShowModalTask(true));
+        store = store.getState();
+        expect(store.showModalTask).toBe(true);
+    });
+
+    it('should call show active', () => {
+        storeActions.dispatch(showActive());
+        action = storeActions.getActions();
+        expect(action[0].type).toBe('showActive');
+    });
+
+    it('should call show completed', () => {
+        storeActions.dispatch(showActive());
+        action = storeActions.getActions();
+        expect(action[0].type).toBe('showActive');
     });
 
 });

@@ -6,7 +6,8 @@ import { StoreState } from '../Models/StoreState';
 export function mapStateToProps(state: StoreState) {
     return {
         pageId: state.todoReducer.pageId,
-        showActiveFlag: state.todoReducer.showActiveFlag
+        showActiveFlag: state.todoReducer.showActiveFlag,
+        user: state.userReducer.user
     };
 }
 

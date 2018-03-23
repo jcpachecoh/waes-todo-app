@@ -1,6 +1,6 @@
 import * as React from 'react';
 import '../css/app.css';
-import { FormGroup, ControlLabel, FormControl, Button, Form, Alert } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, Button, Form, Alert, PageHeader } from 'react-bootstrap';
 import { User } from '../Models/User';
 import { queryGetUser } from '../querys/index';
 import { request } from 'graphql-request';
@@ -9,6 +9,8 @@ export interface LoginProps {
     user: User;
     handleUsername: Function;
     handlePassword: Function;
+    setUserId: Function;
+    history: any;
 }
 
 export interface LoginState {
@@ -34,20 +36,24 @@ export class Login extends React.Component<LoginProps, LoginState> {
             .then((data: any) => {
                 if (data.allUsers.length === 0) {
                     this.setState({
-                        errorLogin: 'Username or password is worng, please try again'
+                        errorLogin: 'Username or password is wrong, please try again'
                     });
                 } else {
-                    console.log(data.allUsers.id);
-                    localStorage.setItem('sessionItemId', data.allUsers.id);
+                    localStorage.setItem('sessionItemId', data.allUsers[0].id);
+                    this.props.history.replace('/todos');
+                    this.props.setUserId(data.allUsers[0].id);
                 }
-
             });
     }
 
     render() {
         return (
             <div className="container">
-                <Form horizontal={true}>
+
+                <Form horizontal={true} className="form-signin">
+                    <PageHeader>
+                        Todo App
+                    </PageHeader>
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Username</ControlLabel>
                         <FormControl
