@@ -3,9 +3,10 @@ import { createStore } from 'redux';
 import configureStore from 'redux-mock-store';
 import { defaultTodos, todoReducer } from '../reducers/todos';
 import { changeTodoTaskInput, showAll, showActive, setShowModalTask } from '../actions/index';
+import thunk from 'redux-thunk';
 
 describe('Test Client reducer', () => {
-    const mockStore = configureStore();
+    const mockStore = configureStore([thunk]);
     let defaultTodosMock: any, store: any, storeActions: any, task: string, action: any;
 
     beforeEach(() => {

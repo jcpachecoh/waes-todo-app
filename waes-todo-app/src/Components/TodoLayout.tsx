@@ -12,7 +12,6 @@ interface TodoLayoutProps {
 class TodoLayout extends React.Component<TodoLayoutProps, {}> {
     componentDidMount() {
         let sessionId = localStorage.getItem('sessionItemId');
-        console.log(sessionId);
         if (!sessionId || sessionId === undefined) {
             this.props.history.replace('/');
         }

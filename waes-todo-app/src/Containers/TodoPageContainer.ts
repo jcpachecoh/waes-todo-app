@@ -1,12 +1,20 @@
 import { connect, Dispatch } from 'react-redux';
-import {  TodoActions, setTodoPage } from '../actions/index';
+import { TodoActions, setTodoPage, setShowAddList } from '../actions/index';
 import { TodoPagesHOC, TodoPagesProps } from '../Components/TodoPages';
+import { StoreState } from '../Models/StoreState';
 
-type ConnectedDispatchProps = Pick<TodoPagesProps, 'setTodoPage'>;
-export function mapDispatchToProps(dispatch: Dispatch<TodoActions>): ConnectedDispatchProps {
+export function mapStateToProps(state: StoreState) {
     return {
-        setTodoPage: (pageId: string) => dispatch(setTodoPage(pageId))
+        showAddList: state.todoReducer.showAddList,
     };
 }
 
-export default connect(null, mapDispatchToProps)(TodoPagesHOC);
+type ConnectedDispatchProps = Pick<TodoPagesProps, 'setTodoPage' | 'setShowAddList'>;
+export function mapDispatchToProps(dispatch: Dispatch<TodoActions>): ConnectedDispatchProps {
+    return {
+        setTodoPage: (pageId: string) => dispatch(setTodoPage(pageId)),
+        setShowAddList: (showAddList: boolean) => dispatch(setShowAddList(showAddList))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoPagesHOC);

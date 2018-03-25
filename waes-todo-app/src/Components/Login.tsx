@@ -4,6 +4,7 @@ import { FormGroup, ControlLabel, FormControl, Button, Form, Alert, PageHeader }
 import { User } from '../Models/User';
 import { queryGetUser } from '../querys/index';
 import { request } from 'graphql-request';
+import { messages, graphcoolEndpoint } from '../constants/index';
 
 export interface LoginProps {
     user: User;
@@ -32,11 +33,11 @@ export class Login extends React.Component<LoginProps, LoginState> {
             password: this.props.user.password
         };
 
-        request('https://api.graph.cool/simple/v1/cjeujoqgm10rw0151kql505uu', queryGetUser, variables)
+        request(graphcoolEndpoint, queryGetUser, variables)
             .then((data: any) => {
                 if (data.allUsers.length === 0) {
                     this.setState({
-                        errorLogin: 'Username or password is wrong, please try again'
+                        errorLogin: messages.messageLogin
                     });
                 } else {
                     localStorage.setItem('sessionItemId', data.allUsers[0].id);

@@ -19,6 +19,16 @@ export const SET_SHOW_MODAL_TASK = 'SetShowModalTask';
 export type SET_SHOW_MODAL_TASK = typeof SET_SHOW_MODAL_TASK;
 export const SET_TODO_PAGE = 'SetTodoPage';
 export type SET_TODO_PAGE = typeof SET_TODO_PAGE;
+export const SET_SHOW_MODAL_CONFIRM = 'SetShowModalConfirm';
+export type SET_SHOW_MODAL_CONFIRM = typeof SET_SHOW_MODAL_CONFIRM;
+export const UPDATE_TASK = 'UpdateTask';
+export type UPDATE_TASK = typeof UPDATE_TASK;
+export const SET_TASK = 'SetTask';
+export type SET_TASK = typeof SET_TASK;
+export const SET_SHOW_ADD_LIST = 'SetShowAddList';
+export type SET_SHOW_ADD_LIST = typeof SET_SHOW_ADD_LIST;
+export const CHANGE_TODO_LIST_INPUT = 'ChangeTodoListInput';
+export type CHANGE_TODO_LIST_INPUT = typeof CHANGE_TODO_LIST_INPUT;
 
 export class AddTodo implements Action {
     type: ADD_TODO;
@@ -110,6 +120,18 @@ export function setShowModalTask(flag: boolean): SetShowModalTask {
     };
 }
 
+export class SetShowModalConfirm implements ActionBoolean {
+    type: SET_SHOW_MODAL_CONFIRM;
+    payload: boolean;
+}
+
+export function setShowModalConfirm(flag: boolean): SetShowModalConfirm {
+    return {
+        type: SET_SHOW_MODAL_CONFIRM,
+        payload: flag
+    };
+}
+
 export class SetTodoPage implements ActionString {
     type: SET_TODO_PAGE;
     payload: string;
@@ -122,6 +144,54 @@ export function setTodoPage(pageId: string): SetTodoPage {
     };
 }
 
+export class UpdateTask implements Action {
+    type: UPDATE_TASK;
+    payload: Task;
+}
+
+export function updateTask(task: Task): UpdateTask {
+    return {
+        type: UPDATE_TASK,
+        payload: task
+    };
+}
+
+export class SetTask implements Action {
+    type: SET_TASK;
+    payload: Task;
+}
+
+export function setTask(task: Task): SetTask {
+    return {
+        type: SET_TASK,
+        payload: task
+    };
+}
+
+export class SetShowAddList implements ActionBoolean {
+    type: SET_SHOW_ADD_LIST;
+    payload: boolean;
+}
+
+export function setShowAddList(flag: boolean): SetShowAddList {
+    return {
+        type: SET_SHOW_ADD_LIST,
+        payload: flag
+    };
+}
+
+export class ChangeTodoListInput implements ActionString {
+    type: CHANGE_TODO_LIST_INPUT;
+    payload: string;
+}
+
+export function changeTodoListInput(todoList: string): ChangeTodoListInput {
+    return {
+        type: CHANGE_TODO_LIST_INPUT,
+        payload: todoList
+    };
+}
+
 export type TodoActions =
     AddTodo |
     DeleteTodo |
@@ -130,4 +200,9 @@ export type TodoActions =
     ShowCompleted |
     ChangeTodoTaskInput |
     SetShowModalTask |
-    SetTodoPage;
+    SetTodoPage |
+    SetShowModalConfirm |
+    UpdateTask | 
+    SetTask |
+    SetShowAddList |
+    ChangeTodoListInput;

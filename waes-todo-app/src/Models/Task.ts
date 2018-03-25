@@ -13,8 +13,10 @@ export class Task {
 
 export class TaskGQVariables {
     done: boolean;
+    todoListId: string;
 
     constructor() {
         this.done = false;
+        this.todoListId = '';
     }
 }

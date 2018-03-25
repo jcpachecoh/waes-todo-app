@@ -4,7 +4,8 @@ import '../App.css';
 import { Button, Modal, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import { Task } from '../Models/Task';
 import { request } from 'graphql-request';
-import { queryCreateTask } from '../querys/index';
+import { queryCreateTask, queryUpdateTaskContent } from '../querys/index';
+import { graphcoolEndpoint } from '../constants/index';
 
 export interface TaskModalProps {
     showModalTask: boolean;
@@ -14,6 +15,7 @@ export interface TaskModalProps {
     setShowModalTask: Function;
     pageId: string;
     refresh: Function;
+    updateFlag: boolean;
 }
 
 interface TaskModalState {
@@ -24,6 +26,10 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
     constructor(props: TaskModalProps) {
         super(props);
         this.saveTask = this.saveTask.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps: TaskModalProps) {
+        console.log(nextProps);
     }
 
     getValidationState() {
@@ -44,7 +50,23 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
             todoListId: this.props.pageId
         };
 
-        request('https://api.graph.cool/simple/v1/cjeujoqgm10rw0151kql505uu', queryCreateTask, variables)
+        request(graphcoolEndpoint, queryCreateTask, variables)
+            .then((data) => {
+                this.props.setShowModalTask(false);
+                this.props.refresh();
+            });
+    }
+
+    updateTask() {
+        const variables = {
+            id: this.props.task.id,
+            task: this.props.task.task,
+            todoListId: this.props.pageId
+        };
+
+        console.log(variables);
+
+        request(graphcoolEndpoint, queryUpdateTaskContent, variables)
             .then((data) => {
                 this.props.setShowModalTask(false);
                 this.props.refresh();
@@ -67,6 +89,7 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
                             <FormControl
                                 type="text"
                                 placeholder="Enter text"
+                                value={this.props.task.task}
                                 onChange={(e: any) => this.props.changeTodoTaskInput(e.target.value)}
                             />
                             <FormControl.Feedback />
@@ -75,7 +98,12 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
 
                     <Modal.Footer>
                         <Button onClick={() => this.props.setShowModalTask(false)}>Close</Button>
-                        <Button bsStyle="primary" onClick={() => this.saveTask()}>Add Task</Button>
+                        {!this.props.updateFlag &&
+                            <Button bsStyle="primary" onClick={() => this.saveTask()}>Add Task</Button>
+                        }
+                        {this.props.updateFlag &&
+                            <Button bsStyle="primary" onClick={() => this.updateTask()}>Update Task</Button>
+                        }
                     </Modal.Footer>
                 </Modal >
             </div >

@@ -8,6 +8,7 @@ export function mapStateToProps(state: StoreState) {
     return {
         task: state.todoReducer.task,
         showModalTask: state.todoReducer.showModalTask,
+        updateFlag: state.todoReducer.updateFlag,
         pageId: state.todoReducer.pageId
     };
 }
@@ -15,7 +16,7 @@ export function mapStateToProps(state: StoreState) {
 type ConnectedDispatchProps = Pick<TaskModalProps, 'changeTodoTaskInput' | 'addTodo' | 'setShowModalTask'>;
 export function mapDispatchToProps(dispatch: Dispatch<TodoActions>): ConnectedDispatchProps {
     return {
-        changeTodoTaskInput: (path: string) => dispatch(changeTodoTaskInput(path)),
+        changeTodoTaskInput: (task: string) => dispatch(changeTodoTaskInput(task)),
         addTodo: (task: Task) => dispatch(addTodo(task)),
         setShowModalTask: (flag: boolean) => dispatch(setShowModalTask(flag))
     };

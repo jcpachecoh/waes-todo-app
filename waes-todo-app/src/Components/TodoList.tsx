@@ -2,11 +2,10 @@ import * as React from 'react';
 import { ChildProps, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Task, TaskGQVariables } from '../Models/Task';
-import { queryUpdateTask } from '../querys/index';
-import { request } from 'graphql-request';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import TaskModalContainer from '../Containers/TaskModalContainer';
 import { User } from '../Models/User';
+import { TaskComponent } from './Task';
 
 export interface TodoListProps {
   showAll: Function;
@@ -16,6 +15,10 @@ export interface TodoListProps {
   pageId: string;
   showActiveFlag: boolean;
   user: User;
+  showConfirmModal: boolean;
+  setShowModalConfirm: Function;
+  updateTask: Function;
+  setTask: Function;
 }
 
 export interface TodoListState {
@@ -29,8 +32,12 @@ type Data = {
 const ALL_TASKS_QUERY = gql`
   query allTasks(
     $done: Boolean!
+    $todoListId: ID!
    ) {
     allTasks(filter: {
+      todoList: {
+        id: $todoListId
+      }
       done: $done
     }){
         id
@@ -53,8 +60,6 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
   constructor(props: TodoListProps) {
     super(props);
     this.refresh = this.refresh.bind(this);
-    this.setAsComplete = this.setAsComplete.bind(this);
-
     this.state = {
       loading: false
     };
@@ -65,8 +70,7 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
   }
 
   componentWillReceiveProps(nextProps: TodoListProps) {
-    console.log(nextProps);
-    this.props.data.variables = Object.assign(this.props.data.variables, { done: nextProps.showActiveFlag });
+    this.props.data.variables = Object.assign(this.props.data.variables, { todoListId: nextProps.pageId, done: nextProps.showActiveFlag });
     this.refresh();
   }
 
@@ -74,7 +78,6 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
     this.setState({
       loading: true
     });
-    this.props.data.variables = Object.assign(this.props.data.variables, { done: this.props.showActiveFlag });
     this.props.data.refetch(this.props.data.variables)
       .then((data) => {
         this.setState({
@@ -83,32 +86,23 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
       });
   }
 
-  setAsComplete(taskId: string, done: boolean) {
-    let variables = {
-      id: taskId,
-      done: done
-    };
-
-    request('https://api.graph.cool/simple/v1/cjeujoqgm10rw0151kql505uu', queryUpdateTask, variables)
-      .then((data) => {
-        this.refresh();
-      });
-  }
   render() {
     return (
       <div className="main-panel">
-       <TaskModalContainer refresh={() => this.refresh()} />
-        <fieldset className="tasks-lists">
+        <TaskModalContainer refresh={() => this.refresh()} />
+        <div className="tasks-lists">
           {this.props.data.allTasks && this.props.data.allTasks.map((item: Task, index: number) => {
-            return <label key={index} className={(item.done) ? 'tasks-list-item-done' : 'tasks-list-item'}>
-              {!item.done &&
-                <input type="checkbox" onChange={(e) => this.setAsComplete(item.id, e.target.checked)} className="tasks-list-cb" />
-              }
-              <span className="tasks-list-mark" />
-              <span className="tasks-list-desc">{item.task}</span>
-            </label>;
+            return <TaskComponent
+              key={index}
+              task={item}
+              refresh={() => this.refresh()}
+              showConfirmModal={this.props.showConfirmModal}
+              setShowModalConfirm={(flag: boolean) => this.props.setShowModalConfirm(flag)}
+              updateTask={() => this.props.updateTask(item)}
+              setTask={() => this.props.setTask(item)}
+            />;
           })}
-        </fieldset>
+        </div>
         {this.state.loading &&
           <Dimmer active={true} inverted={true}>
             <Loader>Loading</Loader>

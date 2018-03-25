@@ -8,6 +8,7 @@ export interface HeaderProps {
     showActive: Function;
     showCompleted: Function;
     logOut: Function;
+    setShowAddList: Function;
 }
 
 export class Header extends React.Component<HeaderProps, {}> {
@@ -21,8 +22,8 @@ export class Header extends React.Component<HeaderProps, {}> {
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav>
-                        <NavItem eventKey={1} href="#" onClick={() => this.props.setShowModalTask(true)}>
-                            <Glyphicon glyph="plus" /> Add Task
+                        <NavItem eventKey={1} href="#" onClick={() => this.props.setShowAddList(true)}>
+                            <Glyphicon glyph="plus" /> Add Todo List
                         </NavItem>
                         <NavItem eventKey={1} href="#" onClick={() => this.props.showAll()}>
                             <Glyphicon glyph="list" /> Show All
@@ -32,6 +33,9 @@ export class Header extends React.Component<HeaderProps, {}> {
                         </NavItem>
                         <NavItem eventKey={1} href="#" onClick={() => this.props.showCompleted()}>
                             <Glyphicon glyph="minus" /> ShowCompleted
+                        </NavItem>
+                        <NavItem eventKey={1} href="#" onClick={() => this.props.setShowModalTask(true)}>
+                            <Glyphicon glyph="plus" /> Add Task
                         </NavItem>
                     </Nav>
                     <Nav pullRight={true}>
