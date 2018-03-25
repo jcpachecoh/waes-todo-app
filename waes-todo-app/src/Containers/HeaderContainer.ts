@@ -2,6 +2,13 @@ import { connect, Dispatch } from 'react-redux';
 import { TodoActions, setShowModalTask, showAll, showActive, showCompleted, setShowAddList } from '../actions/index';
 import { HeaderProps } from '../Components/Header';
 import { Header } from '../Components/Header';
+import { StoreState } from '../Models/StoreState';
+
+export function mapStateToProps(state: StoreState) {
+    return {
+        user: state.userReducer.user
+    };
+}
 
 type ConnectedDispatchProps = Pick<HeaderProps, 'setShowModalTask' |
  'showAll' | 
@@ -18,4 +25,4 @@ export function mapDispatchToProps(dispatch: Dispatch<TodoActions>): ConnectedDi
     };
 }
 
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

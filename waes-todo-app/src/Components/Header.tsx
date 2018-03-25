@@ -1,6 +1,8 @@
 import * as React from 'react';
 import '../App.css';
 import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
+import { Label } from 'semantic-ui-react';
+import { User } from '../Models/User';
 
 export interface HeaderProps {
     setShowModalTask: Function;
@@ -9,6 +11,7 @@ export interface HeaderProps {
     showCompleted: Function;
     logOut: Function;
     setShowAddList: Function;
+    user: User;
 }
 
 export class Header extends React.Component<HeaderProps, {}> {
@@ -39,9 +42,11 @@ export class Header extends React.Component<HeaderProps, {}> {
                         </NavItem>
                     </Nav>
                     <Nav pullRight={true}>
-                        <NavItem onClick={() => this.props.logOut()}>
-                            LogOut
-                        </NavItem>
+                        <Label as="a" color="teal" image={true} className="header-user">
+                            <img src="https://cdn0.iconfinder.com/data/icons/avatar-vol-2-4/512/9-48.png" />
+                            {this.props.user.username}
+                        <Label.Detail onClick={() => this.props.logOut()}>LogOut</Label.Detail>
+                        </Label>
                     </Nav>
                 </Navbar>
             </div>

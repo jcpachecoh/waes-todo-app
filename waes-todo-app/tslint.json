@@ -34,7 +34,6 @@
         "no-consecutive-blank-lines": true,
         "no-construct": true,
         "no-duplicate-variable": true,
-        "no-empty": true,
         "no-eval": true,
         "no-shadowed-variable": true,
         "no-string-literal": true,
