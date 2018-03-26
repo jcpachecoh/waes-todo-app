@@ -21,15 +21,12 @@ export class Header extends React.Component<HeaderProps, {}> {
                 <Navbar collapseOnSelect={true}>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="#home">Todo App</a>
+                            <a href="#">Todo App</a>
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav>
                         <NavItem eventKey={1} href="#" onClick={() => this.props.setShowAddList(true)}>
                             <Glyphicon glyph="plus" /> Add Todo List
-                        </NavItem>
-                        <NavItem eventKey={1} href="#" onClick={() => this.props.showAll()}>
-                            <Glyphicon glyph="list" /> Show All
                         </NavItem>
                         <NavItem eventKey={1} href="#" onClick={() => this.props.showActive()}>
                             <Glyphicon glyph="ok" /> ShowActive

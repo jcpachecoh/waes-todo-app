@@ -29,7 +29,10 @@ export const todoReducer = (state = defaultTodos, action: TodoActions) => {
         case CHANGE_TODO_TASK_INPUT:
 
             return newObject(state, {
-                task: { task: action.payload }
+                task: {
+                    id: state.task.id,
+                    task: action.payload
+                }
             });
 
         case SET_SHOW_MODAL_TASK:
