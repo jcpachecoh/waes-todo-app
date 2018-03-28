@@ -40,7 +40,7 @@ const withTasks = graphql<Data, TodoPagesProps>(ALL_PAGES_QUERY, {
 
 class TodoPages extends React.Component<ChildProps<TodoPagesProps, Data>, TodoPagesState> {
 
-  constructor(props: TodoPagesProps) {
+  constructor(props?: TodoPagesProps, context?: any) {
     super(props);
     this.refresh = this.refresh.bind(this);
 

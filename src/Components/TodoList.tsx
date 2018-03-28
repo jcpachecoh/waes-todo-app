@@ -57,7 +57,7 @@ const withTasks = graphql<Data, TodoListProps>(ALL_TASKS_QUERY, {
 
 class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoListState> {
 
-  constructor(props: TodoListProps) {
+  constructor(props?: TodoListProps, context?: any) {
     super(props);
     this.refresh = this.refresh.bind(this);
     this.state = {
