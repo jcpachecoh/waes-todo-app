@@ -64,8 +64,6 @@ export class TaskModal extends React.Component<TaskModalProps, TaskModalState> {
             todoListId: this.props.pageId
         };
 
-        console.log(variables);
-
         request(graphcoolEndpoint, queryUpdateTaskContent, variables)
             .then((data) => {
                 this.props.setShowModalTask(false);

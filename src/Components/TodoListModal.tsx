@@ -41,10 +41,8 @@ export class TodoListModal extends React.Component<TodoListModalProps, TodoListM
     saveList() {
         const variables = {
             listname: this.props.todoList.listname,
-            authorId: this.props.userId
+            authorId: localStorage.getItem('sessionItemId')
         };
-
-        console.log(variables);
 
         request(graphcoolEndpoint, queryCreateTodoList, variables)
             .then((data) => {

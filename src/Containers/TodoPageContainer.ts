@@ -1,6 +1,6 @@
 import { connect, Dispatch } from 'react-redux';
 import { TodoActions, setTodoPage, setShowAddList } from '../actions/index';
-import { TodoPagesHOC, TodoPagesProps } from '../Components/TodoPages';
+import { TodoPages, TodoPagesProps } from '../Components/TodoPages';
 import { StoreState } from '../Models/StoreState';
 
 export function mapStateToProps(state: StoreState) {
@@ -17,4 +17,4 @@ export function mapDispatchToProps(dispatch: Dispatch<TodoActions>): ConnectedDi
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoPagesHOC);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoPages);

@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { ChildProps, graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import { TaskGQVariables } from '../Models/Task';
 import { TodoPage } from '../Models/TodoPage';
 import { Nav, NavItem } from 'react-bootstrap';
 import AddTodoListContainer from '../Containers/AddTodoListContainer';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import { graphcoolEndpoint } from '../constants/index';
+import { request } from 'graphql-request';
 
 export interface TodoPagesProps {
   setTodoPage: Function;
@@ -15,13 +14,10 @@ export interface TodoPagesProps {
 
 interface TodoPagesState {
   loading: boolean;
+  allTodoLists: TodoPage[];
 }
 
-type Data = {
-  allTodoLists: TodoPage[];
-};
-
-const ALL_PAGES_QUERY = gql`
+const ALL_PAGES_QUERY = `
   query allTodoLists {
     allTodoLists {
         id
@@ -32,31 +28,32 @@ const ALL_PAGES_QUERY = gql`
     }
 `;
 
-const withTasks = graphql<Data, TodoPagesProps>(ALL_PAGES_QUERY, {
-  options: {
-    variables: new TaskGQVariables(),
-  },
-});
-
-class TodoPages extends React.Component<ChildProps<TodoPagesProps, Data>, TodoPagesState> {
+export class TodoPages extends React.Component<TodoPagesProps, TodoPagesState> {
 
   constructor(props?: TodoPagesProps, context?: any) {
     super(props);
     this.refresh = this.refresh.bind(this);
 
     this.state = {
-      loading: false
+      loading: false,
+      allTodoLists: []
     };
+  }
+
+  componentDidMount() {
+    this.refresh();
   }
 
   refresh() {
     this.setState({
       loading: true
     });
-    this.props.data.refetch(this.props.data.variables)
-      .then((data) => {
+
+    request(graphcoolEndpoint, ALL_PAGES_QUERY)
+      .then((data: any) => {
         this.setState({
-          loading: false
+          loading: false,
+          allTodoLists: data.allTodoLists
         });
       });
   }
@@ -66,7 +63,7 @@ class TodoPages extends React.Component<ChildProps<TodoPagesProps, Data>, TodoPa
       <div className="left-menu" >
         <AddTodoListContainer refresh={() => this.refresh()} />
         <Nav bsStyle="pills" stacked={true}>
-          {this.props.data.allTodoLists && this.props.data.allTodoLists.map((item: TodoPage, index: number) => {
+          {this.state.allTodoLists && this.state.allTodoLists.map((item: TodoPage, index: number) => {
             return <NavItem key={index} onClick={() => this.props.setTodoPage(item.id)}>{item.listname}</NavItem>;
           })}
         </Nav>
@@ -79,5 +76,3 @@ class TodoPages extends React.Component<ChildProps<TodoPagesProps, Data>, TodoPa
     );
   }
 }
-
-export const TodoPagesHOC = withTasks(TodoPages);

@@ -1,6 +1,6 @@
 import { connect, Dispatch } from 'react-redux';
 import { TodoActions, showAll, showActive, showCompleted, setAsComplete, setShowModalConfirm, updateTask, setTask } from '../actions/index';
-import { TodoListHOC, TodoListProps } from '../Components/TodoList';
+import { TodoList, TodoListProps } from '../Components/TodoList';
 import { StoreState } from '../Models/StoreState';
 import { Task } from '../Models/Task';
 
@@ -32,4 +32,4 @@ export function mapDispatchToProps(dispatch: Dispatch<TodoActions>): ConnectedDi
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoListHOC);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

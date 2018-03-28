@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { ChildProps, graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import { Task, TaskGQVariables } from '../Models/Task';
+import { Task } from '../Models/Task';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import TaskModalContainer from '../Containers/TaskModalContainer';
 import { User } from '../Models/User';
 import { TaskComponent } from './Task';
+import { request } from 'graphql-request';
+import { graphcoolEndpoint } from '../constants/index';
 
 export interface TodoListProps {
   showAll: Function;
@@ -23,13 +23,10 @@ export interface TodoListProps {
 
 export interface TodoListState {
   loading: boolean;
+  allTasks: Task[];
 }
 
-type Data = {
-  allTasks: Task[];
-};
-
-const ALL_TASKS_QUERY = gql`
+const ALL_TASKS_QUERY = `
   query allTasks(
     $done: Boolean!
     $todoListId: ID!
@@ -49,19 +46,14 @@ const ALL_TASKS_QUERY = gql`
     }
 `;
 
-const withTasks = graphql<Data, TodoListProps>(ALL_TASKS_QUERY, {
-  options: {
-    variables: new TaskGQVariables()
-  },
-});
-
-class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoListState> {
+export class TodoList extends React.Component<TodoListProps, TodoListState> {
 
   constructor(props?: TodoListProps, context?: any) {
     super(props);
     this.refresh = this.refresh.bind(this);
     this.state = {
-      loading: false
+      loading: false,
+      allTasks: []
     };
   }
 
@@ -70,17 +62,34 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
   }
 
   componentWillReceiveProps(nextProps: TodoListProps) {
-    this.props.data.variables = Object.assign(this.props.data.variables, { todoListId: nextProps.pageId, done: nextProps.showActiveFlag });
-    this.refresh();
+    this.setState({
+      loading: true
+    });
+    let variables = {
+      done: nextProps.showActiveFlag,
+      todoListId: nextProps.pageId
+    };
+    request(graphcoolEndpoint, ALL_TASKS_QUERY, variables)
+      .then((data: any) => {
+        this.setState({
+          allTasks: data.allTasks,
+          loading: false
+        });
+      });
   }
 
   refresh() {
     this.setState({
       loading: true
     });
-    this.props.data.refetch(this.props.data.variables)
-      .then((data) => {
+    let variables = {
+      done: false,
+      todoListId: this.props.pageId
+    };
+    request(graphcoolEndpoint, ALL_TASKS_QUERY, variables)
+      .then((data: any) => {
         this.setState({
+          allTasks: data.allTasks,
           loading: false
         });
       });
@@ -91,7 +100,7 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
       <div className="main-panel">
         <TaskModalContainer refresh={() => this.refresh()} />
         <div className="tasks-lists">
-          {this.props.data.allTasks && this.props.data.allTasks.map((item: Task, index: number) => {
+          {this.state.allTasks && this.state.allTasks.map((item: Task, index: number) => {
             return <TaskComponent
               key={index}
               task={item}
@@ -112,5 +121,3 @@ class TodoList extends React.Component<ChildProps<TodoListProps, Data>, TodoList
     );
   }
 }
-
-export const TodoListHOC = withTasks(TodoList);
